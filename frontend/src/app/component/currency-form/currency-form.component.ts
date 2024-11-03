@@ -1,46 +1,61 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CurrencyService, CurrencyRequest } from '../../service/currency.service';
+import { of } from 'rxjs';
+import { switchMap, delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-currency-form',
   standalone: true,
   templateUrl: './currency-form.component.html',
   styleUrls: ['./currency-form.component.css'],
-  imports: [FormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule]
 })
 export class CurrencyFormComponent {
   @Output() currencyValueFetched = new EventEmitter<void>();
 
-  currency: string = '';
-  name: string = '';
+  currencyForm: FormGroup;
   value: number | null = null;
   error: string | null = null;
 
-  constructor(private currencyService: CurrencyService) { }
+  constructor(private currencyService: CurrencyService) {
+    this.currencyForm = new FormGroup({
+      currency: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required)
+    });
+  }
 
   getCurrencyValue() {
+    if (this.currencyForm.invalid) {
+      this.error = 'Please fill in all required fields.';
+      return; 
+    }
+
     this.error = null;
-    const request: CurrencyRequest = { currency: this.currency, name: this.name };
-    this.currencyService.getCurrencyValue(this.currency, this.name, request).subscribe(
-      (response) => {
+    const request: CurrencyRequest = {
+      currency: this.currencyForm.value.currency,
+      name: this.currencyForm.value.name
+    };
+
+    this.currencyService.getCurrencyValue(request.currency, request.name, request).pipe(
+      switchMap((response) => {
         this.value = response.value;
         this.currencyValueFetched.emit();
         this.clearFormFields();
 
-        setTimeout(() => {
-          this.value = null;
-        }, 3000);
-      },
-      (error) => {
-        this.error = 'Error fetching currency value. Please try again.';
-        console.error('Error:', error);
-      }
-    );
+        return of(null).pipe(delay(3000));
+      })
+    ).subscribe(() => {
+      this.value = null;
+    },
+    (error) => {
+      this.error = 'Error fetching currency value. Please try again.';
+      console.error('Error:', error);
+    });
   }
+
   clearFormFields() {
-    this.currency = '';
-    this.name = '';
+    this.currencyForm.reset();
   }
 }

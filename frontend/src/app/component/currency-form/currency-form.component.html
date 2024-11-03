@@ -1,14 +1,14 @@
-<form class="row g-3" (ngSubmit)="getCurrencyValue()" #currencyForm="ngForm">
+<form class="row g-3" [formGroup]="currencyForm" (ngSubmit)="getCurrencyValue()">
     <div class="col-12">
       <label class="visually-hidden" for="currency">Currency Code</label>
-      <input type="text" class="form-control" id="currency" placeholder="Currency Code" [(ngModel)]="currency"
-             name="currency" required>
+      <input type="text" class="form-control" id="currency" placeholder="Currency Code"
+             formControlName="currency" required>
     </div>
   
     <div class="col-12">
       <label class="visually-hidden" for="username">Your Name</label>
-      <input type="text" class="form-control" id="username" placeholder="Your Name" [(ngModel)]="name" name="name"
-             required>
+      <input type="text" class="form-control" id="username" placeholder="Your Name"
+             formControlName="name" required>
     </div>
     
     <div class="col-12">
