@@ -1,0 +1,24 @@
+<form class="row row-cols-lg-auto g-3 align-items-center" (ngSubmit)="getCurrencyValue()" #currencyForm="ngForm">
+    <div class="col-12">
+        <label class="visually-hidden" for="currency">Currency Code</label>
+        <input type="text" class="form-control" id="currency" placeholder="Currency Code" [(ngModel)]="currency"
+            name="currency" required>
+    </div>
+
+    <div class="col-12">
+        <label class="visually-hidden" for="username">Your Name</label>
+        <input type="text" class="form-control" id="username" placeholder="Your Name" [(ngModel)]="name" name="name"
+            required>
+    </div>
+    
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<div *ngIf="value !== null" class="alert alert-success mt-3">
+    Current Value: {{ value }}
+</div>
+<div *ngIf="error" class="alert alert-danger mt-3">
+    {{ error }}
+</div>

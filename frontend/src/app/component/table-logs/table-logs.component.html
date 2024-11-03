@@ -1,0 +1,22 @@
+<h2 class="mt-4">Previous Requests</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Currency</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let request of currencyRequests">
+            <td>{{ request.currency }}</td>
+            <td>{{ request.name }}</td>
+            <td>{{ request.date | date: 'short' }}</td>
+            <td>{{ request.value }}</td>
+        </tr>
+        <tr *ngIf="currencyRequests.length === 0">
+            <td colspan="4" class="text-center">No requests found.</td>
+        </tr>
+    </tbody>
+</table>
