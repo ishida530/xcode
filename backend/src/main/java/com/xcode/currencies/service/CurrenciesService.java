@@ -6,28 +6,29 @@ import com.xcode.currencies.model.CurrencyRequestDTO;
 import com.xcode.currencies.model.CurrencyAPIResponseDTO;
 import com.xcode.currencies.model.CurrencyRequestInfoDTO;
 import com.xcode.currencies.model.CurrencyResponseDTO;
-import com.xcode.currencies.repository.CurrenicesRepository;
+import com.xcode.currencies.repository.CurrenciesRepository;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-
+@Service
 @Slf4j
 @RequiredArgsConstructor
 public class CurrenciesService {
 
-    private final CurrenicesRepository currenicesRepository;
+    private final CurrenciesRepository currenciesRepository;
     private final RestTemplate restTemplate;
     private final String apiUrl;
 
     public CurrencyResponseDTO getCurrentCurrencyValue(CurrencyRequestDTO requestDTO) {
         if (StringUtils.isBlank(requestDTO.getCurrency()) || StringUtils.isBlank(requestDTO.getName())) {
-            throw new CustomNotFoundException("Currency not found: " + requestDTO.getCurrency());
+            throw new CustomNotFoundException("Currency or Name cannot be null or empty");
         }
 
         CurrencyAPIResponseDTO responseDTO = fetchCurrencyValueFromApi(requestDTO.getCurrency());
@@ -47,7 +48,7 @@ public class CurrenciesService {
         request.setCurrency(requestDTO.getCurrency());
         request.setName(requestDTO.getName());
         request.setValue(extractValue(responseDTO));
-        currenicesRepository.save(request);
+        currenciesRepository.save(request);
 
         log.info("Saved currency request: {}", request);
     }
@@ -74,7 +75,7 @@ public class CurrenciesService {
     }
 
     public List<CurrencyRequestInfoDTO> getAllCurrencyRequests() {
-        return currenicesRepository.findAll()
+        return currenciesRepository.findAll()
                 .stream().map(CurrencyRequestInfoDTO::create)
                 .toList();
     }

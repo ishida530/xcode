@@ -3,10 +3,8 @@ package com.xcode.currencies.controller;
 import com.xcode.currencies.model.CurrencyRequestDTO;
 import com.xcode.currencies.model.CurrencyResponseDTO;
 import com.xcode.currencies.service.CurrenciesService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,11 +26,6 @@ class CurrenciesControllerTest {
 
     @MockBean
     private CurrenciesService currenciesService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void getCurrentCurrencyValue_ShouldReturnCurrencyValue() throws Exception {

@@ -4,7 +4,7 @@ import com.xcode.currencies.entity.CurrencyRequestInfoEntity;
 import com.xcode.currencies.model.CurrencyAPIResponseDTO;
 import com.xcode.currencies.model.CurrencyRequestDTO;
 import com.xcode.currencies.model.CurrencyResponseDTO;
-import com.xcode.currencies.repository.CurrenicesRepository;
+import com.xcode.currencies.repository.CurrenciesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class CurrenciesServiceTest {
 
     @Mock
-    private CurrenicesRepository currenicesRepository;
+    private CurrenciesRepository currenciesRepository;
 
     @Mock
     private RestTemplate restTemplate;
@@ -35,7 +35,7 @@ class CurrenciesServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        currenciesService = new CurrenciesService(currenicesRepository, restTemplate, apiUrl);
+        currenciesService = new CurrenciesService(currenciesRepository, restTemplate, apiUrl);
     }
 
     @Test
@@ -49,7 +49,7 @@ class CurrenciesServiceTest {
 
         assertNotNull(responseDTO);
         assertEquals(BigDecimal.valueOf(4.0), responseDTO.getValue());
-        verify(currenicesRepository, times(1)).save(any(CurrencyRequestInfoEntity.class));
+        verify(currenciesRepository, times(1)).save(any(CurrencyRequestInfoEntity.class));
     }
 
     @Test
@@ -96,7 +96,7 @@ class CurrenciesServiceTest {
 
         currenciesService.saveCurrencyRequest(requestDTO, apiResponseDTO);
 
-        verify(currenicesRepository, times(1)).save(any(CurrencyRequestInfoEntity.class));
+        verify(currenciesRepository, times(1)).save(any(CurrencyRequestInfoEntity.class));
     }
 
     private CurrencyAPIResponseDTO createMockApiResponse(BigDecimal midValue) {

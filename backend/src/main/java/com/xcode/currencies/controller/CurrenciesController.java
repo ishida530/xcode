@@ -4,6 +4,7 @@ import com.xcode.currencies.model.CurrencyRequestDTO;
 import com.xcode.currencies.model.CurrencyRequestInfoDTO;
 import com.xcode.currencies.model.CurrencyResponseDTO;
 import com.xcode.currencies.service.CurrenciesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/currencies")
 public class CurrenciesController {
-
 
     private CurrenciesService currenciesService;
 
